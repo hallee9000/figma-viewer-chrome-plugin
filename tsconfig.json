@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "outDir": "dist",
+    "jsx": "react-jsx",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@ui/*": ["ui/*"],
+      "@shared/*": ["shared/*"],
+      "@background/*": ["background/*"],
+    }
+  }
+}
