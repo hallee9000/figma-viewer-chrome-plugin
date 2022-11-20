@@ -1,8 +1,7 @@
 # Figma viewer chrome plugin
 For now Figma plugins are only available for editors. This project is a solution for viewers. You can do many things by this. For example, create a plugin for better inspect experience for developers.
 
-> **Note**
-
+> **Note**<br/>
 > It's a Chrome plugin, not a figma plugin.
 
 https://user-images.githubusercontent.com/12868055/202880945-8ec23e51-0047-4992-974a-f8d5e4e57279.mp4
