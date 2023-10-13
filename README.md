@@ -22,6 +22,8 @@ Setup dev mode.
 yarn dev
 ```
 
+Just change the code of `src/ui/Main.tsx`. You can use the object `figma` directly. No `postMessage` needed.
+
 Build.
 ```bash
 yarn build

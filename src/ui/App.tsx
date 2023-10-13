@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Header from './components/Header'
-import Input from './components/Input'
+import Main from './Main'
 import { rootId } from './utils/constants'
-import { listenToFigma } from './utils/figma'
 
 const Container = styled.div`
   position: fixed;
@@ -33,7 +31,6 @@ function App () {
   const [shiftPosition, setShiftPosition] = useState([0, 0])
   const [position, setPosition] = useState(initialPosition||[window.innerWidth - 505, 72])
   const [minimized, setMinimized] = useState(false)
-  const [style, setStyle] = useState(null)
 
   function handleDragStart (e) {
     let shiftX = e.clientX - header.current.getBoundingClientRect().left;
@@ -50,15 +47,6 @@ function App () {
   function handleToggleSize () {
     setMinimized(!minimized)
   }
-
-  function handleCopied () {
-    // you can use figma object directly, no message posting
-    figma.notify('Copied')
-  }
-
-  useEffect(() => {
-    listenToFigma(style => setStyle(style))
-  }, [])
 
   useEffect(() => {
     function moving (e) {
@@ -87,11 +75,7 @@ function App () {
         minimized={minimized}
         onToggleSize={handleToggleSize}
       />
-      <div className="main">
-        <CopyToClipboard text={style?.name||''} onCopy={handleCopied}>
-          <Input readOnly value={style?.name||'Select a layer'}/>
-        </CopyToClipboard>
-      </div>
+      <Main/>
     </Container>
   )
 }
