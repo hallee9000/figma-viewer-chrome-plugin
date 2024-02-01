@@ -4,10 +4,27 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 function Main () {
   const [name, setName] = useState(null)
+  const [css, setCSS] = useState(null)
 
-  function handleSelectionChange () {
+  function nodeToCSS(name, css) {
+    return `
+.${name} {
+  ${Object.keys(css).map(k => `${k}: ${css[k]};`).join('\n  ')}
+}`
+  }
+
+  async function handleSelectionChange () {
     const node = figma.currentPage.selection[0]
     setName(node.name)
+
+    try {
+      // @ts-expect-error
+      const css = await node.getCSSAsync();
+      setCSS(nodeToCSS(node.name, css))
+    }
+    catch(e) {
+      console.error(e);
+    }
   }
 
   function handleCopied () {
@@ -27,7 +44,7 @@ function Main () {
 
   return (
     <div className="main">
-      <CopyToClipboard text={name||''} onCopy={handleCopied}>
+      <CopyToClipboard text={css||''} onCopy={handleCopied}>
         <Input readOnly value={name||'Select a layer'}/>
       </CopyToClipboard>
     </div>
