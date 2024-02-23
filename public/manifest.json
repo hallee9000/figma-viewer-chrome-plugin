@@ -20,7 +20,7 @@
   "web_accessible_resources": [
     {
       "resources": [ "/js/ui.js" ],
-      "matches": [ "https://figma.com/file/*", "https://www.figma.com/file/*" ]
+      "matches": [ "https://figma.com/*", "https://www.figma.com/*" ]
     }
   ]
 }
