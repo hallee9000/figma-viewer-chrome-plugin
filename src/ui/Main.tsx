@@ -4,6 +4,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Input from './components/Input'
 import CodeArea from './components/CodeArea';
 import { Copy } from 'react-feather';
+import { FrameBox } from './components/FrameBox'
 
 const Container = styled.div`
   display: flex;
@@ -28,12 +29,22 @@ const IconButton = styled.button`
 
 function Main () {
   const [name, setName] = useState(null)
-  const [css, setCSS] = useState(null)
+  const [cssString, setCssString] = useState(null)
+  const [cssDeclaration, setCssDeclaration] = useState(null)
 
-  function nodeToCSS(name, css) {
+  function nodeToCSSString(name, css) {
     return `.${name} {
   ${Object.keys(css).map(k => `${k}: ${css[k]};`).join('\n  ')}
 }`
+  }
+  function nodeToCSSDeclaration(css) {
+    // Guard: no css
+    if (!css) return null
+    // Create a new CSSStyleDeclaration
+    const c = new CSSStyleSheet()
+    c.insertRule(`i{${Object.entries(css).map(([k,v]) => `${k}:${v};`).join('')}}`)
+    // @ts-expect-error
+    return c.cssRules?.[0]?.style!
   }
 
   async function handleSelectionChange () {
@@ -43,7 +54,8 @@ function Main () {
     try {
       // @ts-expect-error
       const css = await node.getCSSAsync();
-      setCSS(nodeToCSS(node.name, css))
+      setCssString(nodeToCSSString(node.name, css))
+      setCssDeclaration(nodeToCSSDeclaration(css))
     }
     catch(e) {
       console.error(e);
@@ -71,14 +83,20 @@ function Main () {
         <Input readOnly value={name||'Select a layer'}/>
       </CopyToClipboard>
       {
-        css &&
+        cssString &&
         <CodeArea>
-          { css }
-          <CopyToClipboard text={css||''} onCopy={handleCopied}>
+          { cssString }
+          <CopyToClipboard text={cssString||''} onCopy={handleCopied}>
             <IconButton>
               <Copy size={20}/>
             </IconButton>
           </CopyToClipboard>
+        </CodeArea>
+      }
+      {
+        cssDeclaration &&
+        <CodeArea>
+          <FrameBox data={cssDeclaration}/>
         </CodeArea>
       }
     </Container>
